@@ -1,49 +1,58 @@
 package com.geniusssoft.journalApp.controllers;
 
 import com.geniusssoft.journalApp.entity.JournalEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.geniusssoft.journalApp.services.JournalService;
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
 @RequestMapping("/journal")
 public class JournalController {
+    @Autowired
+    private JournalService journalService;
+
 
     // Getting all the journal entries....
     @GetMapping
     public List<JournalEntity> getAll(){
-        return null;
+        return journalService.getAll();
     }
 
     @PostMapping
-    public boolean createEntry(@RequestBody JournalEntity p_Entry) {
+    public JournalEntity createEntry(@RequestBody JournalEntity p_Entry) {
+        p_Entry.setdate(LocalDateTime.now());
+        return journalService.saveJournalEntry(p_Entry);
 
-
-        return true;
     }
 
     // update the Journal entry
     @PutMapping("/{id}")
-    public boolean updateEntry(@PathVariable long id, @RequestBody JournalEntity p_Entry) {
-        return true;
+    public JournalEntity updateEntry(@PathVariable ObjectId id, @RequestBody JournalEntity p_NewEntry) {
+        JournalEntity oldEntry = journalService.getEntryById(id).orElse(null);
+        if (oldEntry != null) {
+            oldEntry.setTitle(p_NewEntry.getTitle() != null && ! p_NewEntry.getTitle().equals("") ? p_NewEntry.getTitle() : oldEntry.getTitle());
+            oldEntry.setContent(p_NewEntry.getContent() != null && ! p_NewEntry.getContent().equals("") ? p_NewEntry.getContent() : oldEntry.getContent());
+            return journalService.saveJournalEntry(oldEntry);
+        } else {
+            return null;
+        }
     }
 
     // Get Single Journal Entry
     @GetMapping("/{id}")
-    public JournalEntity getEntry(@PathVariable long id) {
-        return null;
+    public JournalEntity getEntry(@PathVariable ObjectId id) {
+        return journalService.getEntryById(id).orElse(null);
     }
 
     // Delete Journal Entry
     @DeleteMapping("/{id}")
-    public boolean deleteEntry(@PathVariable long id) {
+    public boolean deleteEntry(@PathVariable ObjectId id) {
 
         return false;
     }

@@ -1,22 +1,38 @@
 package com.geniusssoft.journalApp.entity;
 
 import com.fasterxml.jackson.annotation.JsonTypeId;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.lang.annotation.Documented;
+import java.time.LocalDateTime;
+import java.util.Date;
 
-@Document
+@Document(collection = "journal_entries") // this is the name of the collection in MongoDB
 public class JournalEntity {
     // used to identify the journal entry
     @Id // this is the primary key
-    private String id;
+    private ObjectId id;
+    private LocalDateTime date;
     private String title;
     private String content;
 
-    public String getId() {
+    public LocalDateTime getdate() {
+        return date;
+    }
+
+    public void setdate(LocalDateTime date) {
+        this.date = date;
+    }
+
+
+
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
