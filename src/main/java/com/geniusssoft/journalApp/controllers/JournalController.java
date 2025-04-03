@@ -4,6 +4,8 @@ import com.geniusssoft.journalApp.entity.JournalEntity;
 import com.geniusssoft.journalApp.services.JournalService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -20,14 +22,16 @@ public class JournalController {
 
     // Getting all the journal entries....
     @GetMapping
-    public List<JournalEntity> getAll(){
-        return journalService.getAll();
+    public ResponseEntity<List<JournalEntity>> getAll(){
+        return new ResponseEntity<>(journalService.getAll(), HttpStatus.OK);
     }
 
+    // Creating a new Journal Entry....
     @PostMapping
-    public JournalEntity createEntry(@RequestBody JournalEntity p_Entry) {
-        p_Entry.setdate(LocalDateTime.now());
-        return journalService.saveJournalEntry(p_Entry);
+    public ResponseEntity<JournalEntity> createEntry(@RequestBody JournalEntity p_Entry) {
+        p_Entry.setDate(LocalDateTime.now());
+
+        return new ResponseEntity<>(journalService.saveJournalEntry(p_Entry), HttpStatus.CREATED);
 
     }
 
@@ -53,7 +57,7 @@ public class JournalController {
     // Delete Journal Entry
     @DeleteMapping("/{id}")
     public boolean deleteEntry(@PathVariable ObjectId id) {
-
-        return false;
+        journalService.deleteEntry(id);
+        return true;
     }
 }
