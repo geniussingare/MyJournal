@@ -1,6 +1,7 @@
 package com.geniusssoft.journalApp.controllers;
 
 import com.geniusssoft.journalApp.entity.JournalEntity;
+import com.geniusssoft.journalApp.entity.User;
 import com.geniusssoft.journalApp.repositorys.UserRepository;
 import com.geniusssoft.journalApp.services.JournalService;
 import org.bson.types.ObjectId;
@@ -13,7 +14,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/journal")
 public class JournalController {
@@ -22,9 +22,52 @@ public class JournalController {
     @Autowired
     private UserRepository userRepository;
 
-    // Get List of all Journal Entries for user...
-    // Create a Journal for user...
-    // Get a Journal Entry by journal entry id...
-    // Update a Journal Entry via user...
-    // Delete a Journal Entry via user...
+
+
+   // Get all journal entries for a specific user
+    @GetMapping("/{username}")
+    public ResponseEntity<List<JournalEntity>> getAllJournalEntries(
+            @PathVariable String username)
+    {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            List<JournalEntity> journalEntries = user.getJournalEntries();
+            return new ResponseEntity<>(journalEntries, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/{username}")
+    public ResponseEntity<JournalEntity> createJournalEntry(
+            @PathVariable String username,
+            @RequestBody JournalEntity journalEntity)
+    {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+
+            return new ResponseEntity<>(journalService.saveJournalEntry(journalEntity, username), HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{username}/{id}")
+    public ResponseEntity<String> deleteJournalEntry(
+            @PathVariable String username,
+            @PathVariable ObjectId id)
+    {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            boolean deleted = journalService.deleteEntry(id, username);
+            if (deleted) {
+                return new ResponseEntity<>("Journal entry deleted successfully", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Failed to delete journal entry", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
+
