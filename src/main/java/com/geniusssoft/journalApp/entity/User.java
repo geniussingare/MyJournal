@@ -1,7 +1,5 @@
 package com.geniusssoft.journalApp.entity;
 
-import lombok.Data;
-import lombok.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -14,16 +12,13 @@ import java.util.List;
 import java.util.Set;
 
 @Document(collection = "users")
-@Data
 public class User {
     @Id
     private ObjectId id;
 
     @Indexed(unique = true)
-    @NonNull
     private String username;
     
-    @NonNull
     private String password;
     
     private Set<String> roles = new HashSet<>();
@@ -39,5 +34,46 @@ public class User {
         this.username = username;
         this.password = password;
         this.roles.add("ROLE_USER"); // Default role
+    }
+    
+    // Getters and Setters
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
+
+    public List<JournalEntity> getJournalEntries() {
+        return journalEntries;
+    }
+
+    public void setJournalEntries(List<JournalEntity> journalEntries) {
+        this.journalEntries = journalEntries;
     }
 }

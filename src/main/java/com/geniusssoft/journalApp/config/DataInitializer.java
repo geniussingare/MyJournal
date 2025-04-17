@@ -22,21 +22,29 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // Check if admin user exists
-        if (userRepository.findByUsername("admin") == null) {
-            // Create admin user
-            User adminUser = new User();
-            adminUser.setUsername("admin");
-            adminUser.setPassword(passwordEncoder.encode("admin123")); // You should change this to a secure password
+        // Create initial users if they don't exist
+        createUserIfNotFound("admin", "admin123", true);
+        createUserIfNotFound("user", "password", false);
+        
+        System.out.println("Data initialization completed.");
+    }
+    
+    private void createUserIfNotFound(String username, String password, boolean isAdmin) {
+        if (userRepository.findByUsername(username) == null) {
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(passwordEncoder.encode(password));
             
             Set<String> roles = new HashSet<>();
-            roles.add("ROLE_ADMIN");
             roles.add("ROLE_USER");
-            adminUser.setRoles(roles);
+            if (isAdmin) {
+                roles.add("ROLE_ADMIN");
+            }
+            user.setRoles(roles);
             
-            userRepository.save(adminUser);
+            userRepository.save(user);
             
-            System.out.println("Admin user created successfully!");
+            System.out.println("User '" + username + "' created successfully!");
         }
     }
 } 
