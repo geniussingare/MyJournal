@@ -49,6 +49,11 @@
 			<version>1.18.38</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- ... other dependency elements ... -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
