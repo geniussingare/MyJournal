@@ -2,13 +2,12 @@
 	"info": {
 		"_postman_id": "1a5d2e3f-6b7c-8d9e-0f1a-2b3c4d5e6f7g",
 		"name": "Journal App API",
-		"description": "API endpoints for Journal Application with Spring Security",
+		"description": "Collection of REST APIs for the Journal App",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Authentication",
-			"description": "Authentication related endpoints",
 			"item": [
 				{
 					"name": "Register User",
@@ -25,17 +24,9 @@
 							"raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"password123\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/auth/register",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"auth",
-								"register"
-							]
+							"raw": "{{baseUrl}}/api/auth/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "register"]
 						},
 						"description": "Register a new user in the system"
 					},
@@ -56,17 +47,9 @@
 							"raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"password123\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/auth/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"auth",
-								"login"
-							]
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "login"]
 						},
 						"description": "Authenticate a user and create a session"
 					},
@@ -78,17 +61,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/auth/user",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"auth",
-								"user"
-							]
+							"raw": "{{baseUrl}}/api/auth/user",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "user"]
 						},
 						"description": "Get information about the currently authenticated user"
 					},
@@ -100,17 +75,9 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/auth/logout",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"auth",
-								"logout"
-							]
+							"raw": "{{baseUrl}}/api/auth/logout",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "logout"]
 						},
 						"description": "End the user's session and logout"
 					},
@@ -119,8 +86,7 @@
 			]
 		},
 		{
-			"name": "Admin",
-			"description": "Admin endpoints (requires ROLE_ADMIN)",
+			"name": "Admin Operations",
 			"item": [
 				{
 					"name": "Get All Users",
@@ -128,17 +94,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/admin/users",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"admin",
-								"users"
-							]
+							"raw": "{{baseUrl}}/api/admin/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "users"]
 						},
 						"description": "Get a list of all users (requires admin role)"
 					},
@@ -159,18 +117,14 @@
 							"raw": "{\n    \"role\": \"MODERATOR\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/admin/users/testuser/roles",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"admin",
-								"users",
-								"testuser",
-								"roles"
+							"raw": "{{baseUrl}}/api/admin/users/:username/roles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "users", ":username", "roles"],
+							"variable": [
+								{
+									"key": "username",
+									"value": "testuser"
+								}
 							]
 						},
 						"description": "Add a role to a user (requires admin role)"
@@ -183,19 +137,18 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/admin/users/testuser/roles/MODERATOR",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"admin",
-								"users",
-								"testuser",
-								"roles",
-								"MODERATOR"
+							"raw": "{{baseUrl}}/api/admin/users/:username/roles/:role",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "users", ":username", "roles", ":role"],
+							"variable": [
+								{
+									"key": "username",
+									"value": "testuser"
+								},
+								{
+									"key": "role",
+									"value": "MODERATOR"
+								}
 							]
 						},
 						"description": "Remove a role from a user (requires admin role)"
@@ -208,17 +161,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/admin/users/testuser",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"admin",
-								"users",
-								"testuser"
+							"raw": "{{baseUrl}}/api/admin/users/:username",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "users", ":username"],
+							"variable": [
+								{
+									"key": "username",
+									"value": "testuser"
+								}
 							]
 						},
 						"description": "Delete a user from the system (requires admin role)"
@@ -228,24 +178,22 @@
 			]
 		},
 		{
-			"name": "Journals",
-			"description": "Journal entry endpoints (requires authentication)",
+			"name": "Journal Operations",
 			"item": [
 				{
-					"name": "Get All Journals",
+					"name": "Get All Journal Entries",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/journals",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"journals"
+							"raw": "{{baseUrl}}/journal/:username",
+							"host": ["{{baseUrl}}"],
+							"path": ["journal", ":username"],
+							"variable": [
+								{
+									"key": "username",
+									"value": "testuser"
+								}
 							]
 						},
 						"description": "Get all journal entries for the current user"
@@ -267,15 +215,14 @@
 							"raw": "{\n    \"title\": \"My First Journal Entry\",\n    \"content\": \"This is the content of my first journal entry.\",\n    \"tags\": [\"personal\", \"thoughts\"]\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/journals",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"journals"
+							"raw": "{{baseUrl}}/journal/:username",
+							"host": ["{{baseUrl}}"],
+							"path": ["journal", ":username"],
+							"variable": [
+								{
+									"key": "username",
+									"value": "testuser"
+								}
 							]
 						},
 						"description": "Create a new journal entry"
@@ -341,21 +288,39 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/journals/{journal_id}",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"journals",
-								"{journal_id}"
+							"raw": "{{baseUrl}}/journal/:username/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["journal", ":username", ":id"],
+							"variable": [
+								{
+									"key": "username",
+									"value": "testuser"
+								},
+								{
+									"key": "id",
+									"value": "60c7b1b0e1c2d34e5f6a7b8d"
+								}
 							]
 						},
 						"description": "Delete a journal entry"
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Check Health",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": ["{{baseUrl}}"],
+							"path": ["health"]
+						}
+					}
 				}
 			]
 		}
